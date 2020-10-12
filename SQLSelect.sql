@@ -106,6 +106,53 @@ where neighbourhood = "Williamsburg"
 and (reviews_per_month is null 
 	or reviews_per_month = 0);
     
+select
+	name,
+    host_name
+from listing
+where name like "%clean%";
 
+select
+	name,
+    host_name
+from listing
+where name like "%clean";
+
+select * from listing where name like "%spacious%";
+
+select
+	name,
+    host_name
+from listing
+where host_name like "_o__";
+
+select *
+from listing
+where neighbourhood in ('Bayside', 'Eltingville', 'Jackson Heights', 'Van Nest');
+
+select *
+from listing
+where neighbourhood_group not in ("Manhattan", "Bronx", "Brooklyn");
+
+select *
+from listing
+where reviews_per_month in (5,6,7,8);
+
+select *
+from listing
+where reviews_per_month between 5 and 8;
+
+select *
+from listing
+where last_review between "2018-10-01" and "2019-02-01";
+
+select *
+from listing
+where price between 155.0 and 225.0;
+
+
+
+
+	
     
     
