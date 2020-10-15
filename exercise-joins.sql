@@ -191,20 +191,14 @@ select
     p.description,
     concat(e.first_name, " ", e.last_name) employee_full_name
 from customer c
-inner join project p on c.customer_id = p.customer_id
-inner join project_employee pe on p.project_id = pe.project_id
-inner join employee e on pe.employee_id = e.employee_id
-where c.postal_code = "M3H" 
-and e.first_name = "Fleur" and e.last_name = "Soyle";
-
-select
-	concat(c.first_name, " ", c.last_name) customer_full_name,
-    p.project_id
-    -- concat(e.first_name, " ", e.last_name) employee_full_name
-from customer c
-inner join project p on c.customer_id = p.customer_id
-where c.postal_code = "M3H"
-order by p.project_id; -- HELP
+left outer join project p on c.customer_id = p.customer_id
+left outer join project_employee pe on p.project_id = pe.project_id
+	and pe.employee_id = (select 
+							employee_id
+						  from employee
+                          where first_name = "Fleur" and last_name = "Soyle")
+left outer join employee e on pe.employee_id = e.employee_id
+where c.postal_code = "M3H";
 
 
 

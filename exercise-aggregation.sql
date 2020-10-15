@@ -214,13 +214,11 @@ group by c.city;
 -- (Requires a subquery.)
 -- Expected: Starkie 2019-01-01
 select
-	concat(c.first_name, " ", c.last_name) full_name,
-	(select
-		min(p.start_date)
-	from project p
-    where year(p.start_date) = "2019") start_date
+	c.last_name,
+    p.start_date
 from customer c
-inner join project p on p.customer_id = c.customer_id
-having start_date
-order by start_date desc
-limit 1;
+join project p on p.customer_id = c.customer_id
+where p.start_date = (select
+						min(start_date)
+					  from project
+                      where year(start_date) = 2019);
