@@ -12,7 +12,7 @@ create table album (
 	album_id int primary key auto_increment,
     title varchar(50) not null,
     release_date date not null,
-    label varchar(50) not null,
+    label varchar(50) null,
     artist_id int not null,
     constraint fk_album_artist_id
 		foreign key (artist_id)
@@ -59,6 +59,8 @@ create table album_track (
 create table artist_track (
 	artist_id int not null,
     track_id int not null,
+    track_writer varchar(250) not null,
+    featured_artist int null,
     constraint pk_artist_track
 		primary key (artist_id, track_id),
 	constraint fk_artist_track_artist
