@@ -1,40 +1,35 @@
 package learn.pets.data;
 
 import learn.pets.models.Pet;
-import org.junit.jupiter.api.BeforeAll;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 class PetJdbcTemplateRepositoryTest {
 
+    @Autowired
     PetJdbcTemplateRepository repository;
 
-    public PetJdbcTemplateRepositoryTest() {
-        ApplicationContext context = new AnnotationConfigApplicationContext(DbTestConfig.class);
-        repository = context.getBean(PetJdbcTemplateRepository.class);
-    }
+    @Autowired
+    JdbcTemplate jdbcTemplate;
 
-    @BeforeAll
-    static void oneTimeSetup() {
-        ApplicationContext context = new AnnotationConfigApplicationContext(DbTestConfig.class);
-        JdbcTemplate jdbcTemplate = context.getBean(JdbcTemplate.class);
-        jdbcTemplate.update("call set_known_good_state();");
-    }
+    static boolean hasSetUp = false;
 
-    /*
-    Overall Test Strategy:
-    - Leave pet_id 1 alone.
-    - Update pet_id 2.
-    - Delete pet_id 3.
-    Therefore, can't depend on pet 2 to remain the same and can't depend on pet 3 to exist.
-    Also can't count pets because a pet may be added at any time.
-     */
+    @BeforeEach
+    void setUp() {
+        if (!hasSetUp) {
+            hasSetUp = true;
+            jdbcTemplate.update("call set_known_good_state");
+        }
+    }
 
     @Test
     void shouldFindAll() {
