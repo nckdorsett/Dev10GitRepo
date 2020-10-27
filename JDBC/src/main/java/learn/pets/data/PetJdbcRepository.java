@@ -2,6 +2,8 @@ package learn.pets.data;
 import learn.pets.models.Pet;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -9,6 +11,8 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+@Repository
+@Profile("jdbc")
 public class PetJdbcRepository implements PetRepository {
 
     private DataSource dataSource = initDataSource();

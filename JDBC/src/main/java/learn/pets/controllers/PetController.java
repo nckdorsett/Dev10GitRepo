@@ -49,14 +49,18 @@ public class PetController {
         if (petId != pet.getPetId()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-
-        Result<Pet> result = service.update(pet);
-        if (result.getType() == ResultType.INVALID) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } else if (result.getType() == ResultType.NOT_FOUND) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        try {
+            Result<Pet> result = service.update(pet);
+            if (result.getType() == ResultType.INVALID) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            } else if (result.getType() == ResultType.NOT_FOUND) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
     }
 
     @DeleteMapping("/{petId}")
